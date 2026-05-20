@@ -1,0 +1,1 @@
+ciao prof. cincioni. prima di allora, usavo un setup con deno.js quindi potevo usare gli import con il server side. purtroppo js e una lingua che fa schifo. quindi se lo faccio su jsx, import non mi va piu. ho dovuto mette tutto su un singolo quiz.js script. mi perdoni.
