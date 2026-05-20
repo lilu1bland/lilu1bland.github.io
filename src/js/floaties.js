@@ -8,6 +8,7 @@ const H = () => container.offsetHeight;
 
 let floaties = [];
 
+function vmin() { return Math.min(W(), H()); }
 
 function spawnFloaties(list) {
   const w = W(), h = H();
@@ -17,10 +18,12 @@ function spawnFloaties(list) {
     el.src = FLOATIE_DIR + list[i % list.length];
     el.alt = '';
 
-    const size      = 70 + Math.floor(Math.random() * 50);
+    const sizePct   = 0.04 + Math.random() * 0.08;
+    const size      = sizePct * vmin();
     const x         = Math.random() * (w - size);
     const y         = Math.random() * (h - size);
-    const speed     = 60 + Math.random() * 80;
+    const speedPct  = 0.08 + Math.random() * 0.10;
+    const speed     = speedPct * vmin();
     const angle     = Math.random() * Math.PI * 2;
     const spinSpeed = (Math.random() - 0.5) * 120;
 
@@ -30,6 +33,7 @@ function spawnFloaties(list) {
 
     floaties.push({
       el, x, y, size,
+      sizePct, speedPct,
       vx:  Math.cos(angle) * speed,
       vy:  Math.sin(angle) * speed,
       rot: Math.random() * 360,
@@ -38,8 +42,8 @@ function spawnFloaties(list) {
   }
 }
 
-
 let last = null;
+let lastVmin = vmin();
 
 function loop(ts) {
   if (!last) last = ts;
@@ -47,6 +51,19 @@ function loop(ts) {
   last = ts;
 
   const w = W(), h = H();
+  const curVmin = vmin();
+
+  if (Math.abs(curVmin - lastVmin) > 1) {
+    const ratio = curVmin / lastVmin;
+    for (const f of floaties) {
+      f.size = f.sizePct * curVmin;
+      f.vx *= ratio;
+      f.vy *= ratio;
+      f.el.style.width  = f.size + 'px';
+      f.el.style.height = f.size + 'px';
+    }
+    lastVmin = curVmin;
+  }
 
   for (let i = 0; i < floaties.length; i++) {
     const f = floaties[i];
@@ -73,6 +90,5 @@ function loop(ts) {
   requestAnimationFrame(loop);
 }
 
-// vediamo e non giudichiamo :)
 spawnFloaties(images.length ? images : ['terry.png', 'trans.png']);
 requestAnimationFrame(loop);
