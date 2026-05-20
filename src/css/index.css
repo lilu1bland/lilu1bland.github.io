@@ -12,7 +12,8 @@
   --yellow: #ffe066;
   --bg: #ffffff;
   --ink: #1a1a2e;
-  --border: 3px solid var(--ink);
+  --border: clamp(1.5px, 0.16vw, 3px) solid var(--ink);
+  --s: clamp(0.4, 1vw / 19.05, 1);
 }
 
 body {
@@ -24,16 +25,18 @@ body {
   background-image:
     radial-gradient(circle, #f0e6ff 1px, transparent 1px),
     radial-gradient(circle, #ffe0f0 1px, transparent 1px);
-  background-size: 40px 40px, 70px 70px;
-  background-position: 0 0, 20px 20px;
+  background-size:
+    calc(40px * (100vw / 1905)) calc(40px * (100vw / 1905)),
+    calc(70px * (100vw / 1905)) calc(70px * (100vw / 1905));
+  background-position: 0 0, calc(20px * (100vw / 1905)) calc(20px * (100vw / 1905));
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 48px;
-  padding: 18px 48px;
+  gap: clamp(12px, 2.52vw, 48px);
+  padding: clamp(8px, 0.94vw, 18px) clamp(16px, 2.52vw, 48px);
   border-bottom: var(--border);
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(6px);
@@ -43,7 +46,7 @@ body {
 }
 
 .nav-logo {
-  font-size: 2rem;
+  font-size: clamp(1rem, 1.05vw, 2rem);
   animation: wobble 2.5s ease-in-out infinite;
 }
 
@@ -55,16 +58,16 @@ body {
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 36px;
+  gap: clamp(12px, 1.89vw, 36px);
 }
 
 .nav-links a {
   font-family: 'Finger Paint', cursive;
-  font-size: 1rem;
+  font-size: clamp(1rem, 1.1vw, 1.6rem);
   color: var(--ink);
   text-decoration: none;
   position: relative;
-  padding-bottom: 3px;
+  padding-bottom: clamp(1px, 0.16vw, 3px);
 }
 
 .nav-links a::after {
@@ -73,7 +76,7 @@ body {
   bottom: 0;
   left: 0;
   width: 0%;
-  height: 3px;
+  height: clamp(1.5px, 0.16vw, 3px);
   background: var(--pink);
   border-radius: 2px;
   transition: width 0.25s ease;
@@ -93,8 +96,8 @@ body {
 
 .floatie {
   position: absolute;
-  width: 56px;
-  height: 56px;
+  width: clamp(20px, 2.94vw, 56px);
+  height: clamp(20px, 2.94vw, 56px);
   object-fit: contain;
   opacity: 0.75;
   animation: floatMove var(--dur) ease-in-out infinite, spinSlow var(--spin) linear infinite;
@@ -102,9 +105,9 @@ body {
 
 @keyframes floatMove {
   0%   { transform: translateY(0px) translateX(0px); }
-  25%  { transform: translateY(-18px) translateX(10px); }
-  50%  { transform: translateY(-8px) translateX(-12px); }
-  75%  { transform: translateY(-22px) translateX(6px); }
+  25%  { transform: translateY(clamp(-8px, -0.94vw, -18px)) translateX(clamp(4px, 0.52vw, 10px)); }
+  50%  { transform: translateY(clamp(-4px, -0.42vw, -8px)) translateX(clamp(-5px, -0.63vw, -12px)); }
+  75%  { transform: translateY(clamp(-10px, -1.15vw, -22px)) translateX(clamp(3px, 0.31vw, 6px)); }
   100% { transform: translateY(0px) translateX(0px); }
 }
 
@@ -119,67 +122,67 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 74px);
-  padding: 60px 24px 120px;
+  min-height: calc(100vh - clamp(36px, 4.5vh, 74px));
+  padding: clamp(24px, 3.15vw, 60px) clamp(12px, 1.26vw, 24px) clamp(48px, 6.3vw, 120px);
 }
 
 .doodle-border {
   background: rgba(255,255,255,0.92);
-  border: 4px solid var(--ink);
-  border-radius: 28px;
-  padding: 56px 64px;
+  border: clamp(2px, 0.21vw, 4px) solid var(--ink);
+  border-radius: clamp(12px, 1.47vw, 28px);
+  padding: clamp(24px, 2.94vw, 56px) clamp(28px, 3.36vw, 64px);
   text-align: center;
-  max-width: 720px;
+  max-width: clamp(400px, 47.2vw, 900px);
   position: relative;
-  box-shadow: 8px 8px 0px var(--ink);
+  box-shadow: clamp(3px, 0.42vw, 8px) clamp(3px, 0.42vw, 8px) 0px var(--ink);
 }
 
 .title {
   font-family: 'Finger Paint', cursive;
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(1.1rem, 1.68vw, 3.2rem);
   line-height: 1.25;
-  margin-bottom: 24px;
+  margin-bottom: clamp(10px, 1.26vw, 24px);
 }
 
 .highlight {
   background: var(--pink);
-  padding: 2px 10px;
-  border-radius: 8px;
+  padding: clamp(1px, 0.1vw, 2px) clamp(4px, 0.52vw, 10px);
+  border-radius: clamp(3px, 0.42vw, 8px);
   display: inline-block;
   transform: rotate(-1.5deg);
 }
 
 .highlight2 {
   background: var(--lavender);
-  padding: 2px 10px;
-  border-radius: 8px;
+  padding: clamp(1px, 0.1vw, 2px) clamp(4px, 0.52vw, 10px);
+  border-radius: clamp(3px, 0.42vw, 8px);
   display: inline-block;
   transform: rotate(1deg);
 }
 
 .subtitle {
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 1.4vw, 2.6rem);
   line-height: 1.6;
-  margin-bottom: 40px;
+  margin-bottom: clamp(18px, 2.1vw, 40px);
   color: #333;
 }
 
 .cta-btn {
   display: inline-block;
   font-family: 'Finger Paint', cursive;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 1.1vw, 2rem);
   background: var(--yellow);
   color: var(--ink);
-  border: 3px solid var(--ink);
-  border-radius: 14px;
-  padding: 14px 36px;
+  border: clamp(1.5px, 0.16vw, 3px) solid var(--ink);
+  border-radius: clamp(6px, 0.74vw, 14px);
+  padding: clamp(6px, 0.74vw, 14px) clamp(16px, 1.89vw, 36px);
   text-decoration: none;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .doodle-corner {
   position: absolute;
-  font-size: 1.6rem;
+  font-size: clamp(0.7rem, 0.84vw, 1.6rem);
   color: var(--pink);
   font-family: 'Finger Paint', cursive;
   animation: cornerPulse 2s ease-in-out infinite alternate;
@@ -190,10 +193,10 @@ body {
   to   { transform: scale(1.4) rotate(20deg); opacity: 1; }
 }
 
-.tl { top: -16px; left: -16px; }
-.tr { top: -16px; right: -16px; animation-delay: 0.5s; }
-.bl { bottom: -16px; left: -16px; animation-delay: 1s; }
-.br { bottom: -16px; right: -16px; animation-delay: 1.5s; }
+.tl { top: clamp(-7px, -0.84vw, -16px); left: clamp(-7px, -0.84vw, -16px); }
+.tr { top: clamp(-7px, -0.84vw, -16px); right: clamp(-7px, -0.84vw, -16px); animation-delay: 0.5s; }
+.bl { bottom: clamp(-7px, -0.84vw, -16px); left: clamp(-7px, -0.84vw, -16px); animation-delay: 1s; }
+.br { bottom: clamp(-7px, -0.84vw, -16px); right: clamp(-7px, -0.84vw, -16px); animation-delay: 1.5s; }
 
 .squiggle-bottom {
   position: fixed;
@@ -206,7 +209,7 @@ body {
 
 .squiggle-bottom svg {
   width: 100%;
-  height: 60px;
+  height: clamp(24px, 3.15vw, 60px);
   display: block;
 }
 
@@ -214,16 +217,16 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: min(260px, 20vw);
+  width: min(clamp(80px, 13.65vw, 260px), 20vw);
   animation: jump 1s infinite;
 }
 
 .side-img.left {
-  left: calc(50% - min(360px, 30vw) - min(260px, 20vw) - 64px);
+  left: calc(50% - min(clamp(144px, 18.9vw, 360px), 30vw) - min(clamp(80px, 13.65vw, 260px), 20vw) - clamp(24px, 3.36vw, 64px));
 }
 
 .side-img.right {
-  right: calc(50% - min(360px, 30vw) - min(260px, 20vw) - 64px);
+  right: calc(50% - min(clamp(144px, 18.9vw, 360px), 30vw) - min(clamp(80px, 13.65vw, 260px), 20vw) - clamp(24px, 3.36vw, 64px));
 }
 
 @keyframes jump {
@@ -232,11 +235,11 @@ body {
     animation-timing-function: ease-out;
   }
   25% {
-    transform: translateY(calc(-50% - 100px)) rotate(-5deg) scale(1);
+    transform: translateY(calc(-50% - clamp(40px, 5.25vw, 100px))) rotate(-5deg) scale(1);
     animation-timing-function: ease-in;
   }
   75% {
-    transform: translateY(calc(-50% - 100px)) rotate(5deg) scale(1);
+    transform: translateY(calc(-50% - clamp(40px, 5.25vw, 100px))) rotate(5deg) scale(1);
     animation-timing-function: ease-in;
   }
 }
