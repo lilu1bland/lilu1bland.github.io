@@ -1,0 +1,344 @@
+@import url('https://fonts.googleapis.com/css2?family=Finger+Paint&family=Patrick+Hand&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --pink: #ff6eb4;
+  --lavender: #c9a0ff;
+  --yellow: #ffe066;
+  --bg: #ffffff;
+  --ink: #1a1a2e;
+  --border: 3px solid var(--ink);
+}
+
+body {
+  background-color: var(--bg);
+  font-family: 'Patrick Hand', cursive;
+  color: var(--ink);
+  overflow: hidden;
+  height: 100vh;
+  background-image:
+    radial-gradient(circle, #f0e6ff 1px, transparent 1px),
+    radial-gradient(circle, #ffe0f0 1px, transparent 1px);
+  background-size: 40px 40px, 70px 70px;
+  background-position: 0 0, 20px 20px;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  padding: 18px 48px;
+  border-bottom: var(--border);
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(6px);
+  position: relative;
+  z-index: 100;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 36px;
+}
+
+.nav-links a {
+  font-family: 'Finger Paint', cursive;
+  font-size: 1rem;
+  color: var(--ink);
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 3px;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--pink);
+  border-radius: 2px;
+  transition: width 0.25s ease;
+}
+
+.nav-links a:hover::after { width: 100%; }
+
+.cutscene {
+  position: relative;
+  height: calc(100vh - 74px);
+  overflow-y: auto;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px 24px;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.9s ease;
+}
+
+.scene.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scene.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.line1, .line2, .line3 {
+  font-family: 'Finger Paint', cursive;
+  line-height: 1.6;
+  max-width: 680px;
+}
+
+.line1 { font-size: clamp(1.1rem, 2.5vw, 1.6rem); }
+.line2 { font-size: clamp(1.1rem, 2.5vw, 1.7rem); }
+.line3 { font-size: clamp(0.95rem, 2vw, 1.35rem); max-width: 620px; }
+
+.intro-img {
+  width: min(30vw, 30vh);
+  height: min(30vw, 30vh);
+  object-fit: cover;
+  border: var(--border);
+  border-radius: 18px;
+  box-shadow: 8px 8px 0px var(--ink);
+}
+
+.hypercube-img {
+  width: min(22vw, 22vh);
+  height: min(22vw, 22vh);
+  object-fit: contain;
+}
+
+.cta-btn {
+  display: inline-block;
+  font-family: 'Finger Paint', cursive;
+  font-size: 1.1rem;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  padding: 14px 36px;
+  text-decoration: none;
+  box-shadow: 5px 5px 0px var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.cta-btn:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0px var(--ink);
+}
+
+.cta-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--ink);
+}
+
+.question-box {
+  background: rgba(255,255,255,0.93);
+  border: 4px solid var(--ink);
+  border-radius: 24px;
+  padding: 40px 48px;
+  max-width: 760px;
+  width: 100%;
+  box-shadow: 8px 8px 0px var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.question-number {
+  font-family: 'Finger Paint', cursive;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.question-text {
+  font-family: 'Finger Paint', cursive;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  line-height: 1.5;
+}
+
+.answers-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.answer-btn {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1rem;
+  background: #fff;
+  color: var(--ink);
+  border: 2.5px solid var(--ink);
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0px var(--ink);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.answer-btn:hover {
+  background: var(--lavender);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px var(--ink);
+}
+
+.answer-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--ink);
+}
+
+.result-title {
+  font-family: 'Finger Paint', cursive;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+}
+
+.result-verdict {
+  font-family: 'Finger Paint', cursive;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  max-width: 600px;
+  line-height: 1.6;
+  background: var(--yellow);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  padding: 14px 28px;
+  box-shadow: 5px 5px 0px var(--ink);
+}
+
+.score-bar-container {
+  width: min(500px, 80vw);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.score-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Finger Paint', cursive;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.score-bar-track {
+  position: relative;
+  height: 28px;
+  background: linear-gradient(to right, var(--pink), #fff 50%, #7ec8e3);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  overflow: visible;
+}
+
+.score-bar-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  background: var(--ink);
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px var(--ink);
+  transition: left 1s cubic-bezier(.4,2,.6,1);
+}
+
+.answers-log {
+  width: min(600px, 90vw);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+  max-height: 30vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.log-entry {
+  background: rgba(255,255,255,0.9);
+  border: 2.5px solid var(--ink);
+  border-radius: 10px;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.95rem;
+  text-align: left;
+  box-shadow: 3px 3px 0px var(--ink);
+}
+
+.log-entry .log-q {
+  font-family: 'Finger Paint', cursive;
+  font-size: 0.78rem;
+  color: #555;
+  flex: 1;
+}
+
+.log-entry .log-a {
+  flex: 2;
+}
+
+.log-entry .log-pts {
+  font-family: 'Finger Paint', cursive;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.log-entry .log-pts.pos { color: #1a6b3a; }
+.log-entry .log-pts.neg { color: #c0255f; }
+.log-entry .log-pts.zero { color: #888; }
+
+#resultScene {
+  overflow-y: auto;
+  position: absolute;
+  inset: 0;
+  justify-content: flex-start;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.floaties-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.floatie {
+  position: absolute;
+  object-fit: contain;
+  opacity: 0.75;
+  animation: floatMove var(--dur) ease-in-out infinite, spinSlow var(--spin) linear infinite;
+}
+
+@keyframes floatMove {
+  0%   { transform: translateY(0px) translateX(0px); }
+  25%  { transform: translateY(-18px) translateX(10px); }
+  50%  { transform: translateY(-8px) translateX(-12px); }
+  75%  { transform: translateY(-22px) translateX(6px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

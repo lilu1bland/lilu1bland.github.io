@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Il Test</title>
+    <link rel="stylesheet" href="src/css/quiz.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Finger+Paint&family=Patrick+Hand&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quiz.html">Il Test</a></li>
+            <li><a href="result.html">Procedimento</a></li>
+            <li><a href="https://github.com/lilu1bland/lilu1bland.github.io">Github</a></li>
+        </ul>
+    </nav>
+
+    <main class="cutscene" id="cutscene">
+        <div class="scene" id="scene1">
+            <p class="line1">ci sono solo 2 strade che un programmatore puo prendere<br>quando raggiunge certi livelli:</p>
+            <img src="Public/assets/intro_img.png" class="intro-img" alt="" />
+            <p class="line1">TRANS o SCHIZOPHRENICO.</p>
+        </div>
+        <div class="scene hidden" id="scene2">
+            <p class="line2">per fortuna, ho inventato un algoritmo super duper avanzato che salva le vite di giovani programmatori</p>
+        </div>
+        <div class="scene hidden" id="scene3">
+            <p class="line3">grazie alla MIA technologia, posso dire la tua sorte prima che questo ti si accade. il tuo risultato sara determinato dal ipercubo™.</p>
+            <img src="Public/assets/hypercube.gif" class="hypercube-img" alt="" />
+            <a href="#" class="cta-btn" id="startBtn">prova il test ora</a>
+        </div>
+
+        <div class="scene hidden" id="questionScene">
+            <div class="question-box">
+                <p class="question-number" id="questionNumber"></p>
+                <p class="question-text" id="questionText"></p>
+                <div class="answers-grid" id="answersGrid"></div>
+            </div>
+        </div>
+
+        <div class="scene hidden" id="resultScene">
+            <p class="result-title">I TUOI RISULTATI:</p>
+            <img src="Public/assets/hypercube.gif" class="hypercube-img" alt="" />
+            <p class="result-verdict" id="resultVerdict"></p>
+            <div class="score-bar-container">
+                <div class="score-bar-labels">
+                    <span>trans (-10)</span>
+                    <span>schizo (10)</span>
+                </div>
+                <div class="score-bar-track">
+                    <div class="score-bar-fill" id="scoreBarFill"></div>
+                    <div class="score-bar-marker" id="scoreBarMarker"></div>
+                </div>
+            </div>
+            <div class="answers-log" id="answersLog"></div>
+        </div>
+    </main>
+
+    <script src="src/js/cutscene.js"></script>
+    <script src="src/js/quiz.js"></script>
+
+    <div class="floaties-container" id="floaties"></div>
+    <script src="src/js/floaties.js"></script>
+</body>
+
+</html>
