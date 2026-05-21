@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="src/css/index.css" />
     <link href="https://fonts.googleapis.com/css2?family=Finger+Paint&family=Patrick+Hand&display=swap" rel="stylesheet" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <!-- non volevo creare un altro file css quindi lo ho solo coppiato qui -->
+
     <style>
 
         .proc-wrapper {
@@ -81,33 +81,42 @@
     </nav>
 
     <main class="proc-wrapper">
-        <h1 class="proc-title">Come ho fatto questo sito</h1>
+        <h1 class="proc-title">Come ho realizzato questo sito</h1>
 
         <div class="proc-section">
             <h2>Idea iniziale</h2>
-            <p>Questo sito è probabilmente la cosa piu stupida che abbia fatto per un progetti di informatica a scuola.</p>
-  
-            <p>La idea mi si è venuta una mattinata prima delle vacanze di pasqua. Continuavo a ricevere pubblicità per questi "test di personalità" (sappiamo tutti che non servono a niente) e improvvisamente mi si è venuto in mente di creare una parodia. La vera sfida era capire su cosa farlo.</p>
-            <p>Non volevo creare solo un quiz. Ero assetato di sangue. Volevo qualcosa di assurdo. D`allora mi sono ricordato di una persona con cui lavoro; era diventato trans poco fa. Allora mi si accese una lampadina: Ci sono solo 2 strade che un programmatore puo fare. O si diventa trans, o si va completamente fuori di testa. Perchè? Non saprei risponderti. Mi pare che il lavoro di informatico vada completamente contro la natura.</p>
+
+            <p>Questo progetto nasce come una parodia dei numerosi “test di personalità” che compaiono spesso nel mio feed. L’idea mi è venuta poco prima delle vacanze di Pasqua, dopo aver visto molti popup di questo genere di pubblicita.</p>
+
+            <p>All`inizio volevo creare un quiz ironico, ma guardando i tipi di pubblicita che mi uscivano, ho deciso di volerlo rendere pure assurdo. Ho quindi deciso di fare un sito che riprende alcuni stereotipi dei programmatori. Ovvero, nel corso del tempo, tutti i programmatori diventeranno transessuali o schizofrenici.</p>
         </div>
 
         <div class="proc-section">
-            <h2 class="lav">Come ho svolto il lavoro</h2>
-            <p>La prima cosa che mi si è venuta in mente era lo stile. Fin da subito ho immaginato il sito come una sorta di "doodle" con colori molto semplici, come se fosse scritto su carte.</p>
-            <p>Ho già usato il font "Finger Paint" nel passato e mi sembrava uno che funzionerebbe molto qui, quindi lo ho usato. Lo sfondo mi pareva troppo noioso, quindi ho deciso di disgnare Terry A. Davis e la bandiera Trans su msPaint, dato che rappresentavano abbastanza bene l`idea del sito, e ho fatto un piccolo programmino che gli faceva rimbalzare sulle cornici del sito. Avevo già fatto la matematica di questo su un vecchio sito portfolio, quindi bastava fare CTRL C+V. Adesso che ci penso, abbastanza cose erano prese da quel sito portfolio (il navbar, bottoni con animazioni, una animazione che fa saltare le immagini, e l`effetto hover sul navbar); aveva uno stile simile a quello che volevo per questo sito.</p>
-            <p>Dopo che avevo dei "template" per le grafiche, ho deciso di fare lo scheletro del sito; bastava solo creare un holder per le domande, e poi (con molto dolore e difficoltà) creare gli elementi con Javascript; bastava guardare un tutorial so W3Schools. Mi sono trovato a integrare lo stile mentro programmavo il sito, dato che era abbastanza semplice. Le domande mi si erano venute spontaneamente, ma la parte piu difficile era inventarsi delle domande originali che non erano soltato "premere un bottone".</p>
+            <h2 class="lav">Sviluppo del progetto</h2>
+
+            <p>La prima cosa a cui ho pensato era lo stile. Da subito immaginavo il sito come una sorta di “doodle” che lo farebbe sembrare come se fosse creato da un bambino, per prendermi ancora gioco di questi quiz online.</p>
+
+            <p>Ho scelto il font “Finger Paint”, che avevo già utilizzato in altri progetti e che andava bene per lo stile. Per rendere lo sfondo meno noioso, ho disegnato alcune immagini in MS Paint e ho creato un piccolo script che le faceva rimbalzare dei "floaties" sui bordi della pagina. Alcuni elementi nella UI erano presi dai miei portfolio vecchi, per esempio la navbar, lo stile dei pulsanti e gli effetti hover.</p>
+
+            <p>Dopo aver definito lo stile principale, ho iniziato a costruire lo scheletro del sito. Ho creato un contenitore per le domande e poi creato (con grande fatica) gli elementi con JavaScript (ho scelto di fare cosi perche creare diversi elementi su html e gestirli in base alle domande mi pareva molto scomodo). Non mi ricordavo come creare elementi HTML con JS, quindi ho dovuto guardare a https://www.w3schools.com/jsref/met_document_createelement.asp). In questo aspetto, la parte piu difficile era sicuramente pensare alle domande. Alcune mi si venivano spontaneamente, pero volevo essere un po creativo con le mie domande, quindi ho dovuto sbizzarrirmi.</p>
         </div>
 
         <div class="proc-section">
-            <h2 class="yel">LASCIATE OGNI SPERANZA VOI CH`ENTRATE.</h2>
-            <p>Parte 2 di "Come ho svolto il lavoro"</p>
-            <p>La prima parte di design e ideazione non era difficile. Ma ho avuto un demone che mi ha perseguito per tutto il progetto. SERVER SIDED JAVASCRIPT. Io sono un avido fan di deno.js, un server run-time per javascript comunemente usato per creare backend/programmi, pero la volontà di dio era contro di me per questo progetto. Originalmente, avevo pianificato di usare dei moduli per ogni domanda per cui veniva chiamata da un script principale (quiz.js). Andava abbastanza bene, ma solo sul mio computer. Mi sono dimenticato che i computer della scuola NON HANNO deno, e non si potrebbe scaricare in nessun modo. quindi il mio progettto fu divenuto inutile fin dall`inizio. OK. Soluzione? Renderlo pubblico. Come? Sono tirchio e non voglio spendere soldi, allora usero github pages. Ci provo. Non va. Github pages non riesce a caricare node.js. Ok.... allora usero vanilla javascript togliendo dei moduli esterni che usavo. Comunque non funzionano gli import tra i file dello stesso directory. Ho dovuto riformattare tutto il codice in un singolo file, sperando che funzioni tutto. Dopo un paio di ore di sistemazione, andava. Dopo quel evento, sono tornato alla quiete. </p>
+            <h2 class="yel">PROBLEMI.</h2>
+
+            <p>La parte del design era fattibile, ma ho trovato grande frustrazione con il linguaggio di JavaScript. Inizialmente avevo programmato il sito creando dei moduli per ogni domanda, maneggiati da un semplice script principale (Quiz.js). Essa funzionava mentre usavo Deno.js, un runtime sul server per JavaScript che mi era utile per la importazione dei moduli esterni.</p>
+
+            <p>Solo verso la fine mi sono realizzato che i computer della scuola non potevano caricare pagine web con Deno.js. Quindi volevo mettere il sito su GitHub Pages, almeno era accessibile a tutti. Ho scoperto molto velocemente che Deno non era compatibile con GitHub Pages, quindi anche quel piano aveva fallito.</p>
+
+            <p>Alla fine dovevo convertire tutto in “vanilla” JS, a sacrificio di alcune funzionalita come un sandbox per eseguire il codice creato dall`utente. Ho dovuto togliere anche la struttura a moduli, perche Chrome aveva la CORS Policy che mi impediva di caricare altre script, nonostante erano nella stessa directory. Quindi ho dovuto riformattare il codice e buttare tutto dentro un singolo Quiz.js file, che mi ha fatto veramente male al cuore.</p>
         </div>
 
         <div class="proc-section">
             <h2>Conclusione</h2>
-            <p>mi sono divertito, pero mi sono dimenticato quanto schifoso JS è come linguaggio. La gente che piache JS sono come i jogger, insistono che fa bene a se stessi pero non fa altro che causare distruzione e sofferenza</p>
-            <p>Placeholder 8</p>
+
+            <p>Il progetto è stato divertente e ma sono grato che non devo programmare in JavaScript. Programmavo i REST API anni fa per alcuni siti e usavo principalmente TypeScript, un superset to JavaScript con il supporto di types, ed era meglio pero comunque doloroso.</p>
+
+            <p>So che lei (Prof. Alan Cincioni) la serieta è tutto per lei, pero vorrei fare solo un commento: JavaScript secondo me è come il jogging. La gente ti dice che ti fa bene, ma non fa altro che portarti dolore, sofferenza, e una atrofia nelle tue capacita.</p>
         </div>
 
     </main>
