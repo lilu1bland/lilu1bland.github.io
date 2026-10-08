@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f6f1e7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1b1a17" media="(prefers-color-scheme: dark)">
-<title>Kärtchen – Katharina Blum</title>
+<title>katharina blum Kärtchen</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
 <style>
   :root {
@@ -162,6 +162,7 @@
   .feedback.bad { background: var(--bad-bg); color: var(--bad); }
   .feedback small { display: block; font-weight: 400; color: var(--ink); margin-top: 2px; }
   .hidden { display: none !important; }
+  .sep { display: inline-block; width: .9em; }
 
   /* Liste */
   .item { padding: 12px 0; border-top: 1px solid var(--line); }
@@ -181,62 +182,62 @@
 
   <!-- HOME -->
   <section id="home">
-    <h1>Katharina Blum – Kärtchen</h1>
-    <p class="sub">Capitoli 1–12 · completa la frase con la parola giusta</p>
+    <h1>katharina blum Kärtchen</h1>
+    <p class="sub">capitoli da 1 a 12 <span class="sep"></span> completa la frase con la parola giusta</p>
 
     <div class="panel stats" id="stats"></div>
 
     <div class="panel">
-      <h2>Pagine</h2>
+      <h2>pagine</h2>
       <div class="row">
         <label for="from">da</label><select id="from"></select>
         <label for="to">a</label><select id="to"></select>
         <span class="ref" id="rangeCount"></span>
       </div>
-      <label class="toggle"><input type="checkbox" id="showIt"> Mostra subito la traduzione italiana</label>
+      <label class="toggle"><input type="checkbox" id="showIt"> mostra subito la traduzione italiana</label>
     </div>
 
-    <button class="btn primary" id="startAll">Tutte le frasi<small id="startAllSub"></small></button>
-    <button class="btn" id="startQuick">Sessione rapida<small>10 frasi a caso</small></button>
-    <button class="btn" id="startReview">Ripassa gli errori<small id="reviewSub"></small></button>
-    <button class="btn" id="openList">Elenco degli errori<small>Rivedi le frasi che hai sbagliato</small></button>
+    <button class="btn primary" id="startAll">tutte le frasi<small id="startAllSub"></small></button>
+    <button class="btn" id="startQuick">sessione rapida<small>10 frasi a caso</small></button>
+    <button class="btn" id="startReview">ripassa gli errori<small id="reviewSub"></small></button>
+    <button class="btn" id="openList">elenco degli errori<small>rivedi le frasi che hai sbagliato</small></button>
   </section>
 
   <!-- QUIZ -->
   <section id="quiz" class="hidden">
     <div class="topbar">
-      <button class="icon-btn" id="quit" aria-label="Esci">✕</button>
+      <button class="icon-btn" id="quit" aria-label="esci">✕</button>
       <div class="progress">
         <div class="bar"><i id="barFill"></i></div>
-        <div class="meta"><span id="pos"></span><span><span class="ok" id="nOk"></span> · <span class="bad" id="nBad"></span></span></div>
+        <div class="meta"><span id="pos"></span><span><span class="ok" id="nOk"></span><span class="sep"></span><span class="bad" id="nBad"></span></span></div>
       </div>
     </div>
 
     <div class="panel">
       <div class="ref" id="qRef"></div>
       <div class="sentence" id="qSentence"></div>
-      <button class="hint" id="hintBtn">Mostra traduzione</button>
+      <button class="hint" id="hintBtn">mostra traduzione</button>
       <div class="it hidden" id="qIt"></div>
     </div>
 
     <div class="opts" id="opts"></div>
 
     <div class="feedback hidden" id="feedback"></div>
-    <button class="btn primary center hidden" id="next">Avanti →</button>
+    <button class="btn primary center hidden" id="next">avanti</button>
   </section>
 
   <!-- RISULTATI -->
   <section id="results" class="hidden">
-    <h1>Fatto!</h1>
+    <h1>fatto</h1>
     <div class="panel">
       <div class="big" id="rScore"></div>
       <p class="sub center" id="rText" style="margin:0"></p>
     </div>
-    <button class="btn primary" id="retryWrong">Ripeti gli errori di questa sessione</button>
-    <button class="btn" id="again">Nuova sessione</button>
-    <button class="btn" id="toHome">Torna all'inizio</button>
+    <button class="btn primary" id="retryWrong">ripeti gli errori di questa sessione</button>
+    <button class="btn" id="again">nuova sessione</button>
+    <button class="btn" id="toHome">torna al menu</button>
     <div class="panel" id="rListWrap">
-      <h2>Errori di questa sessione</h2>
+      <h2>errori di questa sessione</h2>
       <div id="rList"></div>
     </div>
   </section>
@@ -244,13 +245,13 @@
   <!-- ELENCO ERRORI -->
   <section id="list" class="hidden">
     <div class="topbar">
-      <button class="icon-btn" id="listBack" aria-label="Indietro">←</button>
-      <h1 style="margin:0;font-size:1.4rem">Elenco degli errori</h1>
+      <button class="icon-btn" id="listBack" aria-label="indietro">←</button>
+      <h1 style="margin:0;font-size:1.4rem">elenco degli errori</h1>
     </div>
-    <p class="sub">Una frase esce dall'elenco quando la indovini di nuovo.</p>
-    <button class="btn primary" id="listReview">Ripassa questi errori</button>
+    <p class="sub">una frase sparisce dalla lista quando la indovini di nuovo</p>
+    <button class="btn primary" id="listReview">ripassa questi errori</button>
     <div class="panel"><div id="eList"></div></div>
-    <button class="btn center" id="clearErr">Svuota l'elenco</button>
+    <button class="btn center" id="clearErr">svuota la lista</button>
   </section>
 
 </div>
@@ -282,6 +283,10 @@
   const boldMd = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
   const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
+  // "S. 7, Z. 2" -> "pagina 7 riga 2"
+  const refText = (p) => p.replace(/^S\. (\d+), /, 'pagina $1 ').replace(/Z\. (\d+)/, 'riga $1')
+    .replace('von unten', 'dal basso').replace('mittel', 'metà');
+
   // Frase con lacune: mode 'blank' | 'fill' | 'mark'
   function renderSentence(e, mode) {
     return esc(e.s).replace(/\[([^\]]+)\]/g, (_, w) => {
@@ -304,7 +309,7 @@
     const pct = stats.done ? Math.round(100 * stats.ok / stats.done) : 0;
     $('stats').innerHTML = `
       <div class="stat"><b>${stats.done}</b><span>risposte</span></div>
-      <div class="stat"><b>${stats.done ? pct + '%' : '–'}</b><span>precisione</span></div>
+      <div class="stat"><b>${pct}%</b><span>precisione</span></div>
       <div class="stat"><b>${errCount}</b><span>da ripassare</span></div>`;
     const opts = pages.map(p => `<option value="${p}">${p}</option>`).join('');
     $('from').innerHTML = opts; $('to').innerHTML = opts;
@@ -314,7 +319,7 @@
     $('startAllSub').textContent = `${n} frasi in ordine casuale`;
     $('startAll').disabled = $('startQuick').disabled = n === 0;
     $('startReview').disabled = errCount === 0;
-    $('reviewSub').textContent = errCount ? `${errCount} ${errCount === 1 ? 'frase sbagliata' : 'frasi sbagliate'}` : 'Nessun errore da ripassare';
+    $('reviewSub').textContent = errCount ? `${errCount} ${errCount === 1 ? 'frase sbagliata' : 'frasi sbagliate'}` : 'nessun errore da ripassare';
     $('openList').disabled = errCount === 0;
     $('showIt').checked = showIt;
     show('home');
@@ -343,10 +348,10 @@
     S.answered = false;
     clearTimeout(S.timer);
     $('barFill').style.width = (100 * S.i / S.list.length) + '%';
-    $('pos').textContent = `${S.i + 1} / ${S.list.length}`;
+    $('pos').textContent = `${S.i + 1} di ${S.list.length}`;
     $('nOk').textContent = `✓ ${S.ok}`;
     $('nBad').textContent = `✗ ${S.wrong.length}`;
-    $('qRef').textContent = `Scheda ${e.n} · ${e.p}`;
+    $('qRef').innerHTML = `scheda ${e.n}<span class="sep"></span>${refText(e.p)}`;
     $('qSentence').innerHTML = renderSentence(e, 'blank');
     $('qIt').innerHTML = boldMd(e.it);
     $('qIt').classList.toggle('hidden', !showIt);
@@ -393,8 +398,8 @@
     const fb = $('feedback');
     fb.className = 'feedback ' + (right ? 'ok' : 'bad');
     fb.innerHTML = right
-      ? `Giusto! <small>Parola: <b>${esc(e.w)}</b></small>`
-      : `Sbagliato – la risposta giusta è «${esc(ans)}». <small>Parola: <b>${esc(e.w)}</b></small>`;
+      ? `giusto <small>parola <b>${esc(e.w)}</b></small>`
+      : `sbagliato <span class="sep"></span> la risposta giusta è <b>${esc(ans)}</b> <small>parola <b>${esc(e.w)}</b></small>`;
     $('nOk').textContent = `✓ ${S.ok}`;
     $('nBad').textContent = `✗ ${S.wrong.length}`;
     $('next').classList.remove('hidden');
@@ -412,9 +417,9 @@
 
   function finish() {
     const n = S.list.length;
-    $('rScore').textContent = `${S.ok} / ${n}`;
+    $('rScore').textContent = `${S.ok} su ${n}`;
     const pct = Math.round(100 * S.ok / n);
-    $('rText').textContent = pct === 100 ? 'Perfetto, nessun errore!' : pct >= 80 ? `${pct}% – ottimo lavoro!` : pct >= 50 ? `${pct}% – ci sei quasi.` : `${pct}% – ripassa gli errori qui sotto.`;
+    $('rText').textContent = pct === 100 ? 'perfetto nessun errore' : pct >= 80 ? `${pct}% ottimo lavoro` : pct >= 50 ? `${pct}% ci sei quasi` : `${pct}% ripassa gli errori qui sotto`;
     $('retryWrong').classList.toggle('hidden', !S.wrong.length);
     $('rListWrap').classList.toggle('hidden', !S.wrong.length);
     $('rList').innerHTML = S.wrong.map(w => itemHtml(byId[w.id], w.a, null)).join('');
@@ -426,8 +431,8 @@
       <div class="de">${renderSentence(e, 'mark')}</div>
       ${yours ? `<div class="yours">${esc(yours)}</div>` : ''}
       <div class="it">${boldMd(e.it)}</div>
-      <div class="foot"><span class="ref">${esc(e.w)} · ${e.p}${count ? ` · sbagliata ${count}×` : ''}</span>
-      ${count ? `<button class="link" data-rm="${e.id}">Rimuovi</button>` : ''}</div>
+      <div class="foot"><span class="ref">${esc(e.w)}<span class="sep"></span>${refText(e.p)}${count ? `<span class="sep"></span>sbagliata ${count} ${count === 1 ? 'volta' : 'volte'}` : ''}</span>
+      ${count ? `<button class="link" data-rm="${e.id}">rimuovi</button>` : ''}</div>
     </div>`;
   }
 
@@ -437,7 +442,7 @@
       .sort((a, b) => errors[b].n - errors[a].n || byId[a].n - byId[b].n);
     $('eList').innerHTML = ids.length
       ? ids.map(id => itemHtml(byId[id], errors[id].a, errors[id].n)).join('')
-      : '<div class="empty">Nessun errore. Bravo!</div>';
+      : '<div class="empty">nessun errore bravo</div>';
     $('listReview').disabled = $('clearErr').disabled = !ids.length;
     $('eList').querySelectorAll('[data-rm]').forEach(b => b.onclick = () => {
       delete errors[b.dataset.rm]; store.set('errors', errors); renderList();
@@ -455,7 +460,7 @@
   $('listBack').onclick = renderHome;
   $('listReview').onclick = () => start(errorList(), 'review');
   $('clearErr').onclick = () => {
-    if (confirm('Vuoi davvero svuotare l\'elenco degli errori?')) { errors = {}; store.set('errors', errors); renderList(); }
+    if (confirm('vuoi davvero svuotare la lista degli errori')) { errors = {}; store.set('errors', errors); renderList(); }
   };
   $('hintBtn').onclick = () => { $('qIt').classList.remove('hidden'); $('hintBtn').classList.add('hidden'); };
   $('next').onclick = next;
