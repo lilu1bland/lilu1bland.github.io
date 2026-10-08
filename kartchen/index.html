@@ -173,6 +173,21 @@
     border-radius: 10px; font-size: 1.2rem; font-weight: 600;
   }
   .keys button:active { background: var(--slot); }
+
+  /* Test */
+  .tcard .sentence { font-size: 1.15rem; margin: 4px 0 6px; }
+  .tnum { font-weight: 700; color: var(--accent); margin-right: .5em; }
+  .slot-in.ok { color: var(--ok); background: var(--ok-bg); border-color: var(--ok); font-weight: 600; }
+  .slot-in.bad { color: var(--bad); background: var(--bad-bg); border-color: var(--bad); text-decoration: line-through; }
+  .slot-in:disabled { opacity: 1; -webkit-text-fill-color: currentColor; }
+  .fix { color: var(--ok); font-weight: 600; margin-left: .3em; }
+  .helper { border-top: 1px dashed var(--line); margin-top: 10px; padding-top: 10px; }
+  .choices { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 10px; }
+  .choices button {
+    flex: 1 1 auto; min-height: 44px; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--bg); font-weight: 600; padding: 8px 10px;
+  }
+  .choices button:active { background: var(--slot); }
   .feedback { border-radius: 12px; padding: 12px 14px; font-weight: 600; margin-bottom: 12px; }
   .feedback.ok { background: var(--ok-bg); color: var(--ok); }
   .feedback.bad { background: var(--bad-bg); color: var(--bad); }
@@ -223,6 +238,7 @@
 
     <button class="btn primary" id="startAll">tutte le frasi<small id="startAllSub"></small></button>
     <button class="btn" id="startQuick">sessione rapida<small>10 frasi a caso</small></button>
+    <button class="btn" id="startTest">test<small>10 schede in una pagina con tutte le parole da completare</small></button>
     <button class="btn" id="startReview">ripassa gli errori<small id="reviewSub"></small></button>
     <button class="btn" id="openList">elenco degli errori<small>rivedi le frasi che hai sbagliato</small></button>
   </section>
@@ -256,6 +272,32 @@
 
     <div class="feedback hidden" id="feedback"></div>
     <button class="btn primary center hidden" id="next">avanti</button>
+  </section>
+
+  <!-- TEST -->
+  <section id="test" class="hidden">
+    <div class="topbar">
+      <button class="icon-btn" id="testQuit" aria-label="esci">✕</button>
+      <h1 style="margin:0;font-size:1.4rem">test</h1>
+    </div>
+    <p class="sub">scrivi le parole mancanti oppure tocca un campo e scegli tra tre opzioni</p>
+    <div class="panel hidden" id="testResult">
+      <div class="big" id="tScore"></div>
+      <p class="sub center" id="tText" style="margin:0"></p>
+    </div>
+    <div id="testCards"></div>
+    <button class="btn primary center" id="testSubmit">consegna</button>
+    <button class="btn primary center hidden" id="testAgain">nuovo test</button>
+    <button class="btn center hidden" id="testHome">torna al menu</button>
+
+    <div class="helper hidden" id="tHelper">
+      <div class="ref">scegli</div>
+      <div class="choices" id="tChoices"></div>
+      <div class="keys" id="tKeys">
+        <button data-ch="ä">ä</button><button data-ch="ö">ö</button><button data-ch="ü">ü</button>
+        <button data-ch="Ä">Ä</button><button data-ch="Ö">Ö</button><button data-ch="Ü">Ü</button>
+      </div>
+    </div>
   </section>
 
   <!-- RISULTATI -->
@@ -330,7 +372,7 @@
   }
 
   // ---------- screens ----------
-  const screens = ['home', 'quiz', 'results', 'list'];
+  const screens = ['home', 'quiz', 'results', 'list', 'test'];
   function show(id) {
     screens.forEach(s => $(s).classList.toggle('hidden', s !== id));
     window.scrollTo(0, 0);
@@ -351,7 +393,7 @@
     const n = inRange().length;
     $('rangeCount').textContent = `${n} frasi`;
     $('startAllSub').textContent = `${n} frasi in ordine casuale`;
-    $('startAll').disabled = $('startQuick').disabled = n === 0;
+    $('startAll').disabled = $('startQuick').disabled = $('startTest').disabled = n === 0;
     $('startReview').disabled = errCount === 0;
     $('reviewSub').textContent = errCount ? `${errCount} ${errCount === 1 ? 'frase sbagliata' : 'frasi sbagliate'}` : 'nessun errore da ripassare';
     $('openList').disabled = errCount === 0;
@@ -566,6 +608,144 @@
     else if (!S.answered && ['1', '2', '3'].includes(ev.key)) answer(+ev.key - 1);
     else if (S.answered && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); next(); }
   });
+
+  // ---------- test: 10 schede, tutte le parole in lacuna ----------
+  let T = null;
+
+  // Unisce gli esercizi di una scheda: una frase con tutte le lacune
+  function buildCard(exs) {
+    const blanks = [];
+    exs.forEach(ex => {
+      const re = /\[([^\]]+)\]/g;
+      let m, last = 0, pos = 0, part = 0;
+      while ((m = re.exec(ex.s))) {
+        pos += m.index - last;
+        const ds = ex.d.map(d => d.split(SEP)[part] ?? d);
+        blanks.push({ ex, text: m[1], start: pos, end: pos + m[1].length, choices: shuffle([...new Set([m[1], ...ds])]) });
+        pos += m[1].length; part++;
+        last = m.index + m[0].length;
+      }
+    });
+    blanks.sort((a, b) => a.start - b.start);
+    return { n: exs[0].n, p: exs[0].p, it: exs[0].it, plain: exs[0].s.replace(/[\[\]]/g, ''), exs, blanks };
+  }
+
+  function startTest() {
+    const groups = {};
+    inRange().forEach(e => (groups[e.n] ||= []).push(e));
+    const cards = shuffle(Object.values(groups)).slice(0, 10).map(buildCard);
+    if (!cards.length) return;
+    $('test').appendChild($('tHelper'));  // riportalo fuori prima di riscrivere le schede
+    T = { cards, done: false, input: null };
+    let k = 0;
+    $('testCards').innerHTML = cards.map((c, ci) => {
+      let html = '', pos = 0;
+      c.blanks.forEach(b => {
+        b.k = k++;
+        html += esc(c.plain.slice(pos, b.start)) +
+          `<input class="slot-in" data-k="${b.k}" style="width:${Math.max(b.text.length, 4) + 1.5}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="next" aria-label="risposta"><span class="fix"></span>`;
+        pos = b.end;
+      });
+      html += esc(c.plain.slice(pos));
+      return `<div class="panel tcard" data-c="${ci}">
+        <div class="ref"><span class="tnum">${ci + 1}</span>scheda ${c.n}<span class="sep"></span>${refText(c.p)}</div>
+        <div class="sentence">${html}</div>
+        <div class="it">${boldMd(c.it)}</div>
+      </div>`;
+    }).join('');
+    T.blanks = cards.flatMap(c => c.blanks);
+    T.inputs = [...$('testCards').querySelectorAll('.slot-in')];
+    T.inputs.forEach(inp => {
+      inp.onfocus = () => showHelper(inp);
+      inp.onkeydown = (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); focusNext(inp); } };
+    });
+    $('tHelper').classList.add('hidden');
+    $('testResult').classList.add('hidden');
+    $('testSubmit').classList.remove('hidden');
+    $('testAgain').classList.add('hidden');
+    $('testHome').classList.add('hidden');
+    show('test');
+  }
+
+  // Il pannello con le 3 opzioni e le dieresi si sposta sotto la scheda del campo attivo
+  function showHelper(inp) {
+    if (T.done) return;
+    T.input = inp;
+    const b = T.blanks[+inp.dataset.k];
+    $('tChoices').innerHTML = b.choices.map(c => `<button>${esc(c)}</button>`).join('');
+    $('tChoices').querySelectorAll('button').forEach((btn, j) => {
+      btn.onmousedown = (ev) => ev.preventDefault();
+      btn.onclick = () => { inp.value = b.choices[j]; focusNext(inp); };
+    });
+    inp.closest('.tcard').appendChild($('tHelper'));
+    $('tHelper').classList.remove('hidden');
+  }
+
+  function focusNext(inp) {
+    const i = T.inputs.indexOf(inp);
+    const nxt = T.inputs.slice(i + 1).find(x => !x.value.trim()) || T.inputs.find(x => !x.value.trim());
+    if (nxt && nxt !== inp) nxt.focus();
+    else { inp.blur(); $('tHelper').classList.add('hidden'); }
+  }
+
+  $('tKeys').querySelectorAll('button').forEach(b => {
+    b.onmousedown = (ev) => ev.preventDefault();
+    b.onclick = () => {
+      const i = T.input;
+      if (!i || i.disabled) return;
+      const a = i.selectionStart ?? i.value.length, z = i.selectionEnd ?? a;
+      i.value = i.value.slice(0, a) + b.dataset.ch + i.value.slice(z);
+      i.focus();
+      i.setSelectionRange(a + 1, a + 1);
+    };
+  });
+
+  function submitTest() {
+    if (T.done) return;
+    const empty = T.inputs.filter(i => !i.value.trim()).length;
+    if (empty && !confirm(`${empty} ${empty === 1 ? 'campo è vuoto' : 'campi sono vuoti'} consegnare comunque`)) return;
+    T.done = true;
+    $('tHelper').classList.add('hidden');
+    let okWords = 0;
+    const exOk = new Map();
+    T.blanks.forEach((b, k) => {
+      const inp = T.inputs[k];
+      const val = inp.value.trim().replace(/\s+/g, ' ');
+      const right = !!val && norm(val) === norm(b.text);
+      b.given = val;
+      inp.disabled = true;
+      inp.classList.add(right ? 'ok' : 'bad');
+      if (!val) inp.value = '';
+      if (right) okWords++;
+      else inp.nextElementSibling.textContent = b.text;
+      exOk.set(b.ex, (exOk.get(b.ex) ?? true) && right);
+    });
+    exOk.forEach((right, ex) => {
+      stats.done++;
+      if (right) { stats.ok++; delete errors[ex.id]; }
+      else {
+        const given = T.blanks.filter(b => b.ex === ex).map(b => b.given || '').join(SEP);
+        errors[ex.id] = { n: (errors[ex.id]?.n || 0) + 1, a: given.replace(/^ … | … $/g, '') };
+      }
+    });
+    store.set('stats', stats); store.set('errors', errors);
+    const n = T.blanks.length, pct = Math.round(100 * okWords / n);
+    $('tScore').textContent = `${okWords} su ${n}`;
+    $('tText').textContent = pct === 100 ? 'perfetto tutte le parole giuste' : `${pct}% delle parole giuste`;
+    $('testResult').classList.remove('hidden');
+    $('testSubmit').classList.add('hidden');
+    $('testAgain').classList.remove('hidden');
+    $('testHome').classList.remove('hidden');
+    window.scrollTo(0, 0);
+  }
+
+  $('startTest').onclick = startTest;
+  $('testSubmit').onclick = submitTest;
+  $('testAgain').onclick = startTest;
+  $('testHome').onclick = renderHome;
+  $('testQuit').onclick = () => {
+    if (T.done || !T.inputs.some(i => i.value.trim()) || confirm('vuoi uscire dal test')) renderHome();
+  };
 
   renderHome();
 })();
