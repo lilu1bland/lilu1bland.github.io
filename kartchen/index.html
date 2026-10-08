@@ -483,7 +483,7 @@
     fb.className = 'feedback ' + (right ? 'ok' : 'bad');
     fb.innerHTML = right
       ? `giusto ${extra}<small>parola <b>${esc(e.w)}</b></small>`
-      : `sbagliato <span class="sep"></span> la risposta giusta è <b>${esc(ans)}</b> ${extra}<small>parola <b>${esc(e.w)}</b></small>`;
+      : `sbagliato la risposta giusta è <b>${esc(ans)}</b> ${extra}<small>parola <b>${esc(e.w)}</b></small>`;
     $('nOk').textContent = `✓ ${S.ok}`;
     $('nBad').textContent = `✗ ${S.wrong.length}`;
     $('next').classList.remove('hidden');
