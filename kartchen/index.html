@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f1e7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1b1a17" media="(prefers-color-scheme: dark)">
+<title>Kärtchen – Katharina Blum</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
+<style>
+  :root {
+    --bg: #f6f1e7;
+    --card: #fffdf8;
+    --ink: #22201c;
+    --muted: #6f685c;
+    --line: #e2d9c6;
+    --accent: #8a3b2e;
+    --accent-ink: #fff;
+    --ok: #2f7d4a;
+    --ok-bg: #e3f2e7;
+    --bad: #b23a2e;
+    --bad-bg: #f8e1de;
+    --slot: #efe6d3;
+    --shadow: 0 1px 2px rgba(60, 40, 10, .06), 0 4px 16px rgba(60, 40, 10, .06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1b1a17;
+      --card: #25231f;
+      --ink: #eee8dc;
+      --muted: #a39b8c;
+      --line: #3a3630;
+      --accent: #e08a6f;
+      --accent-ink: #1b1a17;
+      --ok: #7cc893;
+      --ok-bg: #1f3427;
+      --bad: #f08a7e;
+      --bad-bg: #3d2421;
+      --slot: #34302a;
+      --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    min-height: 100dvh;
+  }
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+  }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 600; font-size: 1.7rem; line-height: 1.2; margin: 8px 0 4px; }
+  h2 { font-size: 1.1rem; margin: 0 0 12px; }
+  .sub { color: var(--muted); margin: 0 0 20px; font-size: .95rem; }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--line);
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    margin-bottom: 10px;
+    min-height: 52px;
+  }
+  .btn small { display: block; font-weight: 400; color: var(--muted); font-size: .85rem; }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .btn.primary small { color: inherit; opacity: .85; }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .btn:not(:disabled):active { transform: scale(.99); }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .row label { color: var(--muted); font-size: .95rem; }
+  select {
+    font: inherit;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 6px 8px;
+  }
+  .toggle { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: .95rem; }
+  .toggle input { width: 20px; height: 20px; accent-color: var(--accent); }
+  .stats { display: flex; gap: 10px; }
+  .stat { flex: 1; text-align: center; }
+  .stat b { display: block; font-size: 1.4rem; font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--muted); font-size: .8rem; }
+
+  /* Quiz */
+  .topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .icon-btn {
+    border: 1px solid var(--line); background: var(--card); border-radius: 10px;
+    width: 40px; height: 40px; flex: none; font-size: 1.1rem; line-height: 1;
+  }
+  .progress { flex: 1; }
+  .bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .25s; }
+  .meta { display: flex; justify-content: space-between; color: var(--muted); font-size: .85rem; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .meta .ok { color: var(--ok); }
+  .meta .bad { color: var(--bad); }
+  .sentence {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.3rem;
+    line-height: 1.65;
+    margin: 6px 0 10px;
+  }
+  .slot {
+    display: inline-block;
+    min-width: 4.5em;
+    padding: 0 .35em;
+    border-bottom: 2px solid var(--accent);
+    background: var(--slot);
+    border-radius: 4px 4px 0 0;
+    text-align: center;
+    color: transparent;
+    line-height: 1.35;
+  }
+  .slot.filled { color: var(--ok); border-color: var(--ok); background: var(--ok-bg); font-weight: 600; }
+  .ref { color: var(--muted); font-size: .8rem; }
+  .hint {
+    border: 0; background: none; color: var(--accent); padding: 4px 0; font-size: .95rem; text-decoration: underline; text-underline-offset: 3px;
+  }
+  .it { color: var(--muted); font-size: 1rem; margin-top: 4px; }
+  .it b { color: var(--ink); }
+  .opts { display: grid; gap: 10px; margin: 14px 0; }
+  .opt {
+    display: flex; align-items: center; gap: 12px;
+    border: 2px solid var(--line); background: var(--card);
+    border-radius: 12px; padding: 14px; min-height: 56px;
+    text-align: left; font-size: 1.1rem; font-weight: 600;
+    transition: background .15s, border-color .15s;
+  }
+  .opt kbd {
+    flex: none; width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center;
+    border: 1px solid var(--line); font: 600 .8rem system-ui, sans-serif; color: var(--muted);
+  }
+  .opt.correct { border-color: var(--ok); background: var(--ok-bg); color: var(--ok); }
+  .opt.wrong { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+  .opt.dim { opacity: .5; }
+  .opt:disabled { cursor: default; }
+  .feedback { border-radius: 12px; padding: 12px 14px; font-weight: 600; margin-bottom: 12px; }
+  .feedback.ok { background: var(--ok-bg); color: var(--ok); }
+  .feedback.bad { background: var(--bad-bg); color: var(--bad); }
+  .feedback small { display: block; font-weight: 400; color: var(--ink); margin-top: 2px; }
+  .hidden { display: none !important; }
+
+  /* Liste */
+  .item { padding: 12px 0; border-top: 1px solid var(--line); }
+  .item:first-child { border-top: 0; padding-top: 0; }
+  .item .de { font-family: Georgia, "Times New Roman", serif; font-size: 1.05rem; }
+  .item .de mark { background: var(--ok-bg); color: var(--ok); font-weight: 600; padding: 0 .2em; border-radius: 3px; }
+  .item .yours { color: var(--bad); text-decoration: line-through; font-size: .9rem; }
+  .item .foot { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; gap: 8px; }
+  .link { border: 0; background: none; color: var(--accent); padding: 4px 0; font-size: .9rem; }
+  .empty { color: var(--muted); text-align: center; padding: 20px 0; }
+  .big { font-size: 2.6rem; font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; margin: 4px 0; }
+  .center { text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HOME -->
+  <section id="home">
+    <h1>Katharina Blum – Kärtchen</h1>
+    <p class="sub">Capitoli 1–12 · completa la frase con la parola giusta</p>
+
+    <div class="panel stats" id="stats"></div>
+
+    <div class="panel">
+      <h2>Pagine</h2>
+      <div class="row">
+        <label for="from">da</label><select id="from"></select>
+        <label for="to">a</label><select id="to"></select>
+        <span class="ref" id="rangeCount"></span>
+      </div>
+      <label class="toggle"><input type="checkbox" id="showIt"> Mostra subito la traduzione italiana</label>
+    </div>
+
+    <button class="btn primary" id="startAll">Tutte le frasi<small id="startAllSub"></small></button>
+    <button class="btn" id="startQuick">Sessione rapida<small>10 frasi a caso</small></button>
+    <button class="btn" id="startReview">Ripassa gli errori<small id="reviewSub"></small></button>
+    <button class="btn" id="openList">Elenco degli errori<small>Rivedi le frasi che hai sbagliato</small></button>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="hidden">
+    <div class="topbar">
+      <button class="icon-btn" id="quit" aria-label="Esci">✕</button>
+      <div class="progress">
+        <div class="bar"><i id="barFill"></i></div>
+        <div class="meta"><span id="pos"></span><span><span class="ok" id="nOk"></span> · <span class="bad" id="nBad"></span></span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ref" id="qRef"></div>
+      <div class="sentence" id="qSentence"></div>
+      <button class="hint" id="hintBtn">Mostra traduzione</button>
+      <div class="it hidden" id="qIt"></div>
+    </div>
+
+    <div class="opts" id="opts"></div>
+
+    <div class="feedback hidden" id="feedback"></div>
+    <button class="btn primary center hidden" id="next">Avanti →</button>
+  </section>
+
+  <!-- RISULTATI -->
+  <section id="results" class="hidden">
+    <h1>Fatto!</h1>
+    <div class="panel">
+      <div class="big" id="rScore"></div>
+      <p class="sub center" id="rText" style="margin:0"></p>
+    </div>
+    <button class="btn primary" id="retryWrong">Ripeti gli errori di questa sessione</button>
+    <button class="btn" id="again">Nuova sessione</button>
+    <button class="btn" id="toHome">Torna all'inizio</button>
+    <div class="panel" id="rListWrap">
+      <h2>Errori di questa sessione</h2>
+      <div id="rList"></div>
+    </div>
+  </section>
+
+  <!-- ELENCO ERRORI -->
+  <section id="list" class="hidden">
+    <div class="topbar">
+      <button class="icon-btn" id="listBack" aria-label="Indietro">←</button>
+      <h1 style="margin:0;font-size:1.4rem">Elenco degli errori</h1>
+    </div>
+    <p class="sub">Una frase esce dall'elenco quando la indovini di nuovo.</p>
+    <button class="btn primary" id="listReview">Ripassa questi errori</button>
+    <div class="panel"><div id="eList"></div></div>
+    <button class="btn center" id="clearErr">Svuota l'elenco</button>
+  </section>
+
+</div>
+
+<script src="data.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const SEP = ' … ';
+
+  // ---------- storage ----------
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem('kb.' + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem('kb.' + k, JSON.stringify(v)); } catch {} },
+  };
+  let errors = store.get('errors', {});   // id -> { n: volte sbagliato, a: ultima risposta }
+  let stats = store.get('stats', { done: 0, ok: 0 });
+  let showIt = store.get('showIt', false);
+  let range = store.get('range', null);
+
+  // ---------- data ----------
+  const byId = Object.fromEntries(ESERCIZI.map(e => [e.id, e]));
+  const pageOf = (e) => parseInt(e.p.match(/\d+/)[0], 10);
+  const answerOf = (e) => [...e.s.matchAll(/\[([^\]]+)\]/g)].map(m => m[1]).join(SEP);
+  const pages = [...new Set(ESERCIZI.map(pageOf))].sort((a, b) => a - b);
+  if (!range) range = [pages[0], pages[pages.length - 1]];
+
+  const esc = (s) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const boldMd = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+  const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  // Frase con lacune: mode 'blank' | 'fill' | 'mark'
+  function renderSentence(e, mode) {
+    return esc(e.s).replace(/\[([^\]]+)\]/g, (_, w) => {
+      if (mode === 'mark') return `<mark>${w}</mark>`;
+      return `<span class="slot${mode === 'fill' ? ' filled' : ''}">${mode === 'fill' ? w : w.replace(/./g, '·')}</span>`;
+    });
+  }
+
+  // ---------- screens ----------
+  const screens = ['home', 'quiz', 'results', 'list'];
+  function show(id) {
+    screens.forEach(s => $(s).classList.toggle('hidden', s !== id));
+    window.scrollTo(0, 0);
+  }
+
+  function inRange() { return ESERCIZI.filter(e => { const p = pageOf(e); return p >= range[0] && p <= range[1]; }); }
+
+  function renderHome() {
+    const errCount = Object.keys(errors).length;
+    const pct = stats.done ? Math.round(100 * stats.ok / stats.done) : 0;
+    $('stats').innerHTML = `
+      <div class="stat"><b>${stats.done}</b><span>risposte</span></div>
+      <div class="stat"><b>${stats.done ? pct + '%' : '–'}</b><span>precisione</span></div>
+      <div class="stat"><b>${errCount}</b><span>da ripassare</span></div>`;
+    const opts = pages.map(p => `<option value="${p}">${p}</option>`).join('');
+    $('from').innerHTML = opts; $('to').innerHTML = opts;
+    $('from').value = range[0]; $('to').value = range[1];
+    const n = inRange().length;
+    $('rangeCount').textContent = `${n} frasi`;
+    $('startAllSub').textContent = `${n} frasi in ordine casuale`;
+    $('startAll').disabled = $('startQuick').disabled = n === 0;
+    $('startReview').disabled = errCount === 0;
+    $('reviewSub').textContent = errCount ? `${errCount} ${errCount === 1 ? 'frase sbagliata' : 'frasi sbagliate'}` : 'Nessun errore da ripassare';
+    $('openList').disabled = errCount === 0;
+    $('showIt').checked = showIt;
+    show('home');
+  }
+
+  function setRange() {
+    let a = +$('from').value, b = +$('to').value;
+    if (a > b) [a, b] = [b, a];
+    range = [a, b]; store.set('range', range); renderHome();
+  }
+  $('from').onchange = setRange; $('to').onchange = setRange;
+  $('showIt').onchange = () => { showIt = $('showIt').checked; store.set('showIt', showIt); };
+
+  // ---------- quiz ----------
+  let S = null; // sessione
+
+  function start(list, kind) {
+    if (!list.length) return;
+    S = { kind, list: shuffle(list), i: 0, ok: 0, wrong: [], answered: false, timer: null };
+    show('quiz');
+    renderQ();
+  }
+
+  function renderQ() {
+    const e = S.list[S.i];
+    S.answered = false;
+    clearTimeout(S.timer);
+    $('barFill').style.width = (100 * S.i / S.list.length) + '%';
+    $('pos').textContent = `${S.i + 1} / ${S.list.length}`;
+    $('nOk').textContent = `✓ ${S.ok}`;
+    $('nBad').textContent = `✗ ${S.wrong.length}`;
+    $('qRef').textContent = `Scheda ${e.n} · ${e.p}`;
+    $('qSentence').innerHTML = renderSentence(e, 'blank');
+    $('qIt').innerHTML = boldMd(e.it);
+    $('qIt').classList.toggle('hidden', !showIt);
+    $('hintBtn').classList.toggle('hidden', showIt);
+    $('feedback').classList.add('hidden');
+    $('next').classList.add('hidden');
+
+    const ans = answerOf(e);
+    S.choices = shuffle([ans, ...e.d]);
+    $('opts').innerHTML = S.choices.map((c, k) =>
+      `<button class="opt" data-k="${k}"><kbd>${k + 1}</kbd><span>${esc(c)}</span></button>`).join('');
+    $('opts').querySelectorAll('.opt').forEach(b => b.onclick = () => answer(+b.dataset.k));
+  }
+
+  function answer(k) {
+    if (S.answered) return;
+    S.answered = true;
+    const e = S.list[S.i];
+    const ans = answerOf(e);
+    const pick = S.choices[k];
+    const right = pick === ans;
+
+    $('opts').querySelectorAll('.opt').forEach((b, j) => {
+      b.disabled = true;
+      const c = S.choices[j];
+      if (c === ans) b.classList.add('correct');
+      else if (j === k) b.classList.add('wrong');
+      else b.classList.add('dim');
+    });
+    $('qSentence').innerHTML = renderSentence(e, 'fill');
+    $('qIt').classList.remove('hidden');
+    $('hintBtn').classList.add('hidden');
+
+    stats.done++;
+    if (right) {
+      stats.ok++; S.ok++;
+      delete errors[e.id];
+    } else {
+      S.wrong.push({ id: e.id, a: pick });
+      errors[e.id] = { n: (errors[e.id]?.n || 0) + 1, a: pick };
+    }
+    store.set('stats', stats); store.set('errors', errors);
+
+    const fb = $('feedback');
+    fb.className = 'feedback ' + (right ? 'ok' : 'bad');
+    fb.innerHTML = right
+      ? `Giusto! <small>Parola: <b>${esc(e.w)}</b></small>`
+      : `Sbagliato – la risposta giusta è «${esc(ans)}». <small>Parola: <b>${esc(e.w)}</b></small>`;
+    $('nOk').textContent = `✓ ${S.ok}`;
+    $('nBad').textContent = `✗ ${S.wrong.length}`;
+    $('next').classList.remove('hidden');
+    if (right) S.timer = setTimeout(next, 1400);
+    else $('next').focus({ preventScroll: true });
+  }
+
+  function next() {
+    if (!S.answered) return;
+    clearTimeout(S.timer);
+    S.i++;
+    if (S.i >= S.list.length) return finish();
+    renderQ();
+  }
+
+  function finish() {
+    const n = S.list.length;
+    $('rScore').textContent = `${S.ok} / ${n}`;
+    const pct = Math.round(100 * S.ok / n);
+    $('rText').textContent = pct === 100 ? 'Perfetto, nessun errore!' : pct >= 80 ? `${pct}% – ottimo lavoro!` : pct >= 50 ? `${pct}% – ci sei quasi.` : `${pct}% – ripassa gli errori qui sotto.`;
+    $('retryWrong').classList.toggle('hidden', !S.wrong.length);
+    $('rListWrap').classList.toggle('hidden', !S.wrong.length);
+    $('rList').innerHTML = S.wrong.map(w => itemHtml(byId[w.id], w.a, null)).join('');
+    show('results');
+  }
+
+  function itemHtml(e, yours, count) {
+    return `<div class="item">
+      <div class="de">${renderSentence(e, 'mark')}</div>
+      ${yours ? `<div class="yours">${esc(yours)}</div>` : ''}
+      <div class="it">${boldMd(e.it)}</div>
+      <div class="foot"><span class="ref">${esc(e.w)} · ${e.p}${count ? ` · sbagliata ${count}×` : ''}</span>
+      ${count ? `<button class="link" data-rm="${e.id}">Rimuovi</button>` : ''}</div>
+    </div>`;
+  }
+
+  // ---------- elenco errori ----------
+  function renderList() {
+    const ids = Object.keys(errors).filter(id => byId[id])
+      .sort((a, b) => errors[b].n - errors[a].n || byId[a].n - byId[b].n);
+    $('eList').innerHTML = ids.length
+      ? ids.map(id => itemHtml(byId[id], errors[id].a, errors[id].n)).join('')
+      : '<div class="empty">Nessun errore. Bravo!</div>';
+    $('listReview').disabled = $('clearErr').disabled = !ids.length;
+    $('eList').querySelectorAll('[data-rm]').forEach(b => b.onclick = () => {
+      delete errors[b.dataset.rm]; store.set('errors', errors); renderList();
+    });
+    show('list');
+  }
+
+  const errorList = () => Object.keys(errors).map(id => byId[id]).filter(Boolean);
+
+  // ---------- eventi ----------
+  $('startAll').onclick = () => start(inRange(), 'all');
+  $('startQuick').onclick = () => start(shuffle(inRange()).slice(0, 10), 'quick');
+  $('startReview').onclick = () => start(errorList(), 'review');
+  $('openList').onclick = renderList;
+  $('listBack').onclick = renderHome;
+  $('listReview').onclick = () => start(errorList(), 'review');
+  $('clearErr').onclick = () => {
+    if (confirm('Vuoi davvero svuotare l\'elenco degli errori?')) { errors = {}; store.set('errors', errors); renderList(); }
+  };
+  $('hintBtn').onclick = () => { $('qIt').classList.remove('hidden'); $('hintBtn').classList.add('hidden'); };
+  $('next').onclick = next;
+  $('quit').onclick = () => { clearTimeout(S.timer); S.i > 0 || S.answered ? finishEarly() : renderHome(); };
+  function finishEarly() { if (S.answered) S.i++; S.list = S.list.slice(0, S.i); S.list.length ? finish() : renderHome(); }
+  $('retryWrong').onclick = () => start(S.wrong.map(w => byId[w.id]), 'retry');
+  $('again').onclick = () => start(S.kind === 'quick' ? shuffle(inRange()).slice(0, 10) : S.kind === 'review' ? errorList() : inRange(), S.kind);
+  $('toHome').onclick = renderHome;
+
+  document.addEventListener('keydown', (ev) => {
+    if ($('quiz').classList.contains('hidden') || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    if (!S.answered && ['1', '2', '3'].includes(ev.key)) answer(+ev.key - 1);
+    else if (S.answered && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); next(); }
+  });
+
+  renderHome();
+})();
+</script>
+</body>
+</html>
